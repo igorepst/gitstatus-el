@@ -1,3 +1,13 @@
+#+title: gitstatus-el - Frontend for gitstatusd
+#+author: Igor Epstein
+#+language: en
+#+export_file_name: gitstatus-el.texi
+#+texinfo_dir_category: Emacs misc features
+#+texinfo_dir_title: Gitstatus: (gitstatus).
+#+texinfo_dir_desc: Frontend for gitstatusd
+
+#+html: <a href="https://www.gnu.org/software/emacs/"><img alt="GNU Emacs" src="https://github.com/igorepst/gitstatus-el/blob/assets/emacs.svg?raw=true"/></a>
+
 Common front-end for `gitstatusd'.
 Extracts the Git status information and returns it usually fontified and
 suitable for end-user presentation, for example, as a part of a prompt.
