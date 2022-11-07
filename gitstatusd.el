@@ -153,7 +153,7 @@ They will be recreated on the next request."
     (remhash req-id gitstatusd--callbacks)))
 
 (defun gitstatusd-calc-threads-num ()
-  "Calculates number of threads to use for gitstatusd."
+  "Calculate number of threads to use for gitstatusd."
   (* 2
      (if (fboundp 'num-processors)
 	 (num-processors)
