@@ -8,7 +8,7 @@
 
 #+html: <a href="https://www.gnu.org/software/emacs/"><img alt="GNU Emacs" src="https://github.com/igorepst/gitstatus-el/blob/assets/emacs.svg?raw=true"/></a>
 
-Common front-end for `gitstatusd'.
+Common front-end for `gitstatusd'. 
 Extracts the Git status information and returns it usually fontified and
 suitable for end-user presentation, for example, as a part of a prompt.
 Additional package for the `eshell' prompt is provided for your convenience.
@@ -21,3 +21,5 @@ WSL, Cygwin and MSYS2.  The original work includes scripts to be used in
 Bash and Zsh shells' prompts.
 The executable has to be installed on the end-user machine for the package
 to work.
+
+
