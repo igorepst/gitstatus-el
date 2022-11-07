@@ -8,7 +8,6 @@
 
 #+html: <a href="https://www.gnu.org/software/emacs/"><img alt="GNU Emacs" src="https://github.com/igorepst/gitstatus-el/blob/assets/emacs.svg?raw=true"/></a>
 
-
 The main idea of this package is to provide a /fast/ and /asynchronous/ Git status information
 that may be used as an UI element, say, in ~eshell~ prompt or in ~mode line~.
 
@@ -62,7 +61,7 @@ Most of the values are as suggested for the external app. Please refer to the [[
 
 - ~gitstatusd-exe~ - executable path of the external application. Default: ~gitstatusd~
 - ~gitstatusd-threads-num~ - integer or function representing the number of threads to use for the exe.
-  Default: ~#'gitstatusd-calc-threads-num~. For ~Emacs 28~ on all operation systems and ~Emacs 27~ and below
+  Default: ~#'gitstatusd-calc-threads-num~. For ~Emacs 28~ on all operating systems and ~Emacs 27~ and below
   on Windows, BSD, Mac and Linux it returns 2 * (number of cores).
 - ~gitstatusd-cmd-args~ - cmd args of the exe. Default: ~-s -1 -u -1 -d -1 -c -1 -m -1 -v FATAL~.
 - ~gitstatusd-is-compute-by-index~ - use Git index to perform computation. Default: ~t~.
