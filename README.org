@@ -8,18 +8,52 @@
 
 #+html: <a href="https://www.gnu.org/software/emacs/"><img alt="GNU Emacs" src="https://github.com/igorepst/gitstatus-el/blob/assets/emacs.svg?raw=true"/></a>
 
-Common front-end for `gitstatusd'. 
-Extracts the Git status information and returns it usually fontified and
-suitable for end-user presentation, for example, as a part of a prompt.
-Additional package for the `eshell' prompt is provided for your convenience.
+The main idea of this package is to provide a /fast/ and /asynchronous/ Git status information
+that may be used as an UI element, say, in ~Eshell~ prompt or in ~mode line~.
 
-Note, the package wraps an external executable called "gitstatusd"
-(see <https://github.com/romkatv/gitstatus>).  The executable is distributed
-under GNU General Public License v3.0 and provides a much faster alternative
-to "git status" and "git describe".  It works on Linux, macOS, FreeBSD, Android,
-WSL, Cygwin and MSYS2.  The original work includes scripts to be used in
-Bash and Zsh shells' prompts.
-The executable has to be installed on the end-user machine for the package
-to work.
+The following example provides a full flow view with a ~gitstatus~ information added /when it is ready/,
+e.g. after the main parts of the ~Eshell~ prompt are drawn. This info starts with the word ~on~ on every
+first prompt line and ends just before the clock icon:
 
+https://github.com/igorepst/gitstatus-el/blob/assets/fullFlow.png?raw=true
 
+Note, the package wraps an external executable [[https://github.com/romkatv/gitstatus][gitstatusd]]. The executable is distributed under
+GNU General Public License v3.0 and provides a much faster alternative to ~git status~ and ~git describe~.
+It works on Linux, macOS, FreeBSD, Android, WSL, Cygwin and MSYS2.
+The original work includes scripts to be used in Bash and Zsh shells' prompts.
+The executable has to be installed on the end-user machine for the package to work.
+
+Rest of the document presents a public API and customization options.
+
+#+toc: headlines 8
+
+* Minimal configuration
+
+#+begin_src emacs-lisp
+  ;; Customize path to `gitstatusd' executable
+  (with-eval-after-load 'gitstatusd
+    (customize-set-variable 'gitstatusd-exe "~/.cache/gitstatus/gitstatusd-linux-x86_64"))
+  ;; Add hook to connect between `Eshell' prompt and `gitstatusd'
+  (add-hook 'eshell-before-prompt-hook #'gitstatus-eshell-start)
+#+end_src
+
+* gitstatusd.el
+
+Main wrapper for the ~gitstatusd~ external executable. Opens asynchronous process and communicates with it.
+
+** Public API
+** Customization
+
+* gitstatus.el
+
+Common front-end. Parses the raw status data, processes it and wraps with fonts, icons, etc.
+
+** Public API
+** Customization
+
+* gitstatus-eshell.el
+
+The module adds Git status information to the ~Eshell~ prompt.
+
+** Public API
+** Customization
