@@ -15,7 +15,7 @@ The following example provides a full flow view with a ~gitstatus~ information a
 e.g. after the main parts of the ~Eshell~ prompt are drawn. This info starts with the word ~on~ on every
 first prompt line and ends just before the clock icon:
 
-https://github.com/igorepst/gitstatus-el/blob/assets/fullFlow.png?raw=true
+[[https://github.com/igorepst/gitstatus-el/blob/assets/fullFlow.png?raw=true]]
 
 Note, the package wraps an external executable [[https://github.com/romkatv/gitstatus][gitstatusd]]. The executable is distributed under
 GNU General Public License v3.0 and provides a much faster alternative to ~git status~ and ~git describe~.
