@@ -1,7 +1,7 @@
-#+title: gitstatus-el - Frontend for gitstatusd
+#+title: gitstatus - Front-end for gitstatusd
 #+author: Igor Epstein
 #+language: en
-#+export_file_name: gitstatus-el.texi
+#+export_file_name: gitstatus.texi
 #+texinfo_dir_category: Emacs misc features
 #+texinfo_dir_title: Gitstatus: (gitstatus).
 #+texinfo_dir_desc: Frontend for gitstatusd
@@ -9,19 +9,28 @@
 #+html: <a href="https://www.gnu.org/software/emacs/"><img alt="GNU Emacs" src="https://github.com/igorepst/gitstatus-el/blob/assets/emacs.svg?raw=true"/></a>
 
 The main idea of this package is to provide a /fast/ and /asynchronous/ Git status information
-that may be used as an UI element, say, in ~eshell~ prompt or in ~mode line~.
+that may be used as an UI element, say, in ~eshell~ prompt or in mode line.
 
-The following example provides a full flow view with a ~gitstatus~ information added /when it is ready/,
-e.g. after the main parts of the ~eshell~ prompt are drawn. This info starts with the word ~on~ on the
-first line of each prompt and ends just before the clock icon:
+The following example provides a full flow view with a ~gitstatus~ information added to the highly customized
+~eshell~ prompt /when it is ready/, e.g. after the main parts of the prompt are drawn.
+This info starts with the word ~on~ on the first line of each prompt and ends just before the clock icon:
 
 [[https://github.com/igorepst/gitstatus-el/blob/assets/fullFlow.png?raw=true]]
+
+Or, with default ~eshell~ prompt:
+
+[[https://github.com/igorepst/gitstatus-el/blob/assets/defaultPrompt.png?raw=true]]
+
+Otherwise, you may use ~gitstatus-build-str~ to get a status string and use it elsewhere.
+In addition, the API provides enough separation to override the default processing of the data.
+
 
 Note, the package wraps an external executable [[https://github.com/romkatv/gitstatus][gitstatusd]]. The executable is distributed under
 GNU General Public License v3.0 and provides a much faster alternative to ~git status~ and ~git describe~.
 It works on Linux, macOS, FreeBSD, Android, WSL, Cygwin and MSYS2.
 The original work includes scripts to be used in Bash and Zsh shells' prompts.
 The executable has to be installed on the end-user machine for the package to work.
+
 
 Rest of the document presents a public API and customization options.
 
@@ -33,8 +42,8 @@ Rest of the document presents a public API and customization options.
   ;; Customize path to `gitstatusd' executable
   (with-eval-after-load 'gitstatusd
     (customize-set-variable 'gitstatusd-exe "~/.cache/gitstatus/gitstatusd-linux-x86_64"))
-  ;; Add hook to connect between `eshell' prompt and `gitstatusd'.
   ;; All the essential functions are autoloaded.
+  ;; For `eshell': Add hook to connect between its prompt and `gitstatusd'.
   (add-hook 'eshell-before-prompt-hook #'gitstatus-eshell-start)
 #+end_src
 
@@ -46,13 +55,13 @@ Main wrapper for the ~gitstatusd~ external executable. Opens asynchronous proces
 
 Uses ~cl-defstruct~ called ~gitstatusd~.
 
-- *gitstatusd-get-status* (path callback)
+- ~gitstatusd-get-status (path callback)~
   Make asynchronous request to gitstatusd for PATH with CALLBACK.
-- *gitstatusd-kill*
+- ~gitstatusd-kill~
   Kill gitstatusd process and clear callbacks.
-- *gitstatusd-remove-callback* (req-id)
+- ~gitstatusd-remove-callback (req-id)~
   Remove callback with REQ-ID.
-- *gitstatusd-calc-threads-num*
+- ~gitstatusd-calc-threads-num~
   Calculate number of threads to use for gitstatusd.
 
 ** Customization
@@ -61,7 +70,7 @@ Most of the values are as suggested for the external app. Please refer to the [[
 
 - ~gitstatusd-exe~ - executable path of the external application. Default: ~gitstatusd~
 - ~gitstatusd-threads-num~ - integer or function representing the number of threads to use for the exe.
-  Default: ~#'gitstatusd-calc-threads-num~. For ~Emacs 28~ on all operating systems and ~Emacs 27~ and below
+  Default: ~#'gitstatusd-calc-threads-num~. For ~Emacs 28~ on all operating systems and ~Emacs 25-27~
   on Windows, BSD, Mac and Linux it returns 2 * (number of cores).
 - ~gitstatusd-cmd-args~ - cmd args of the exe. Default: ~-s -1 -u -1 -d -1 -c -1 -m -1 -v FATAL~.
 - ~gitstatusd-is-compute-by-index~ - use Git index to perform computation. Default: ~t~.
@@ -72,7 +81,7 @@ Common front-end. Parses the raw status data, processes it and wraps with fonts,
 
 ** Public API
 
-- *gitstatus-build-str* (res)
+- ~gitstatus-build-str (res)~
   Build ~gitstatus~ string from RES.
   
 ** Customization
@@ -85,9 +94,9 @@ The module adds Git status information to the ~eshell~ prompt.
 
 ** Public API
 
-- *gitstatus-eshell-start*
+- ~gitstatus-eshell-start~
   Run ~gitstatusd~ to extract the info.
-- *gitstatus-eshell-build* (res)
+- ~gitstatus-eshell-build (res)~
   Build ~eshell~ prompt based on ~gitstatusd~ result, represented by RES.
   
 ** Customization
@@ -95,5 +104,5 @@ The module adds Git status information to the ~eshell~ prompt.
 - ~gitstatus-eshell-neighbour-regex~ - Neighbour of the ~gitstatus~ in ~eshell~ prompt.
   Default: ~\\( [$#]\\)~
 - ~gitstatus-eshell-is-neighbour-append~ - Append the status to the neighbour. Default: ~nil~.
-- ~gitstatus-eshell-prompt-lines~ - How many lines of the prompt needs to be searched for the
+- ~gitstatus-eshell-prompt-lines~ - How many lines of the prompt are to be searched for the
   neighbour. Default: ~1~.

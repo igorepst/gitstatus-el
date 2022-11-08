@@ -1,0 +1,221 @@
+This is gitstatus.info, produced by makeinfo version 6.7 from
+gitstatus.texi.
+
+INFO-DIR-SECTION Emacs misc features
+START-INFO-DIR-ENTRY
+* Gitstatus: (gitstatus). Frontend for gitstatusd.
+END-INFO-DIR-ENTRY
+
+
+File: gitstatus.info,  Node: Top,  Next: Minimal configuration,  Up: (dir)
+
+gitstatus - Front-end for gitstatusd
+************************************
+
+The main idea of this package is to provide a _fast_ and _asynchronous_
+Git status information that may be used as an UI element, say, in
+‘eshell’ prompt or in mode line.
+
+   The following example provides a full flow view with a ‘gitstatus’
+information added to the highly customized ‘eshell’ prompt _when it is
+ready_, e.g.  after the main parts of the prompt are drawn.  This info
+starts with the word ‘on’ on the first line of each prompt and ends just
+before the clock icon:
+
+   <https://github.com/igorepst/gitstatus-el/blob/assets/fullFlow.png?raw=true>
+
+   Or, with default ‘eshell’ prompt:
+
+   <https://github.com/igorepst/gitstatus-el/blob/assets/defaultPrompt.png?raw=true>
+
+   Otherwise, you may use ‘gitstatus-build-str’ to get a status string
+and use it elsewhere.  In addition, the API provides enough separation
+to override the default processing of the data.
+
+   Note, the package wraps an external executable gitstatusd
+(https://github.com/romkatv/gitstatus).  The executable is distributed
+under GNU General Public License v3.0 and provides a much faster
+alternative to ‘git status’ and ‘git describe’.  It works on Linux,
+macOS, FreeBSD, Android, WSL, Cygwin and MSYS2.  The original work
+includes scripts to be used in Bash and Zsh shells’ prompts.  The
+executable has to be installed on the end-user machine for the package
+to work.
+
+   Rest of the document presents a public API and customization options.
+
+* Menu:
+
+* Minimal configuration::
+* gitstatusd.el: gitstatusdel.
+* gitstatus.el: gitstatusel.
+* gitstatus-eshell.el: gitstatus-eshellel.
+
+— The Detailed Node Listing —
+
+gitstatusd.el
+
+* Public API::
+* Customization::
+
+gitstatus.el
+
+* Public API: Public API (1).
+* Customization: Customization (1).
+
+gitstatus-eshell.el
+
+* Public API: Public API (2).
+* Customization: Customization (2).
+
+
+
+File: gitstatus.info,  Node: Minimal configuration,  Next: gitstatusdel,  Prev: Top,  Up: Top
+
+1 Minimal configuration
+***********************
+
+     ;; Customize path to `gitstatusd' executable
+     (with-eval-after-load 'gitstatusd
+       (customize-set-variable 'gitstatusd-exe "~/.cache/gitstatus/gitstatusd-linux-x86_64"))
+     ;; All the essential functions are autoloaded.
+     ;; For `eshell': Add hook to connect between its prompt and `gitstatusd'.
+     (add-hook 'eshell-before-prompt-hook #'gitstatus-eshell-start)
+
+
+File: gitstatus.info,  Node: gitstatusdel,  Next: gitstatusel,  Prev: Minimal configuration,  Up: Top
+
+2 gitstatusd.el
+***************
+
+Main wrapper for the ‘gitstatusd’ external executable.  Opens
+asynchronous process and communicates with it.
+
+* Menu:
+
+* Public API::
+* Customization::
+
+
+File: gitstatus.info,  Node: Public API,  Next: Customization,  Up: gitstatusdel
+
+2.1 Public API
+==============
+
+Uses ‘cl-defstruct’ called ‘gitstatusd’.
+
+   • ‘gitstatusd-get-status (path callback)’ Make asynchronous request
+     to gitstatusd for PATH with CALLBACK.
+   • ‘gitstatusd-kill’ Kill gitstatusd process and clear callbacks.
+   • ‘gitstatusd-remove-callback (req-id)’ Remove callback with REQ-ID.
+   • ‘gitstatusd-calc-threads-num’ Calculate number of threads to use
+     for gitstatusd.
+
+
+File: gitstatus.info,  Node: Customization,  Prev: Public API,  Up: gitstatusdel
+
+2.2 Customization
+=================
+
+Most of the values are as suggested for the external app.  Please refer
+to the official guideline (https://github.com/romkatv/gitstatus).
+
+   • ‘gitstatusd-exe’ - executable path of the external application.
+     Default: ‘gitstatusd’
+   • ‘gitstatusd-threads-num’ - integer or function representing the
+     number of threads to use for the exe.  Default:
+     ‘#'gitstatusd-calc-threads-num’.  For ‘Emacs 28’ on all operating
+     systems and ‘Emacs 25-27’ on Windows, BSD, Mac and Linux it returns
+     2 * (number of cores).
+   • ‘gitstatusd-cmd-args’ - cmd args of the exe.  Default: ‘-s -1 -u -1
+     -d -1 -c -1 -m -1 -v FATAL’.
+   • ‘gitstatusd-is-compute-by-index’ - use Git index to perform
+     computation.  Default: ‘t’.
+
+
+File: gitstatus.info,  Node: gitstatusel,  Next: gitstatus-eshellel,  Prev: gitstatusdel,  Up: Top
+
+3 gitstatus.el
+**************
+
+Common front-end.  Parses the raw status data, processes it and wraps
+with fonts, icons, etc.
+
+* Menu:
+
+* Public API: Public API (1).
+* Customization: Customization (1).
+
+
+File: gitstatus.info,  Node: Public API (1),  Next: Customization (1),  Up: gitstatusel
+
+3.1 Public API
+==============
+
+   • ‘gitstatus-build-str (res)’ Build ‘gitstatus’ string from RES.
+
+
+File: gitstatus.info,  Node: Customization (1),  Prev: Public API (1),  Up: gitstatusel
+
+3.2 Customization
+=================
+
+Please refer to the source, as there are too many custom options to
+change icons, faces, etc.
+
+
+File: gitstatus.info,  Node: gitstatus-eshellel,  Prev: gitstatusel,  Up: Top
+
+4 gitstatus-eshell.el
+*********************
+
+The module adds Git status information to the ‘eshell’ prompt.
+
+* Menu:
+
+* Public API: Public API (2).
+* Customization: Customization (2).
+
+
+File: gitstatus.info,  Node: Public API (2),  Next: Customization (2),  Up: gitstatus-eshellel
+
+4.1 Public API
+==============
+
+   • ‘gitstatus-eshell-start’ Run ‘gitstatusd’ to extract the info.
+   • ‘gitstatus-eshell-build (res)’ Build ‘eshell’ prompt based on
+     ‘gitstatusd’ result, represented by RES.
+
+
+File: gitstatus.info,  Node: Customization (2),  Prev: Public API (2),  Up: gitstatus-eshellel
+
+4.2 Customization
+=================
+
+   • ‘gitstatus-eshell-neighbour-regex’ - Neighbour of the ‘gitstatus’
+     in ‘eshell’ prompt.  Default: ‘\\( [$#]\\)’
+   • ‘gitstatus-eshell-is-neighbour-append’ - Append the status to the
+     neighbour.  Default: ‘nil’.
+   • ‘gitstatus-eshell-prompt-lines’ - How many lines of the prompt are
+     to be searched for the neighbour.  Default: ‘1’.
+
+
+
+Tag Table:
+Node: Top208
+Node: Minimal configuration2218
+Node: gitstatusdel2747
+Node: Public API3042
+Node: Customization3577
+Node: gitstatusel4481
+Node: Public API (1)4785
+Node: Customization (1)4986
+Node: gitstatus-eshellel5209
+Node: Public API (2)5479
+Node: Customization (2)5814
+
+End Tag Table
+
+
+Local Variables:
+coding: utf-8
+End:
