@@ -7,6 +7,7 @@
 #+texinfo_dir_desc: Frontend for gitstatusd
 
 #+html: <a href="https://www.gnu.org/software/emacs/"><img alt="GNU Emacs" src="https://github.com/igorepst/gitstatus-el/blob/assets/emacs.svg?raw=true"/></a>
+#+html: <a href="https://melpa.org/#/gitstatus"><img alt="MELPA" src="https://melpa.org/packages/gitstatus-badge.svg"/></a>
 
 The main idea of this package is to provide a /fast/ and /asynchronous/ Git status information
 that may be used as an UI element, say, in ~eshell~ prompt or in mode line.
@@ -30,6 +31,8 @@ GNU General Public License v3.0 and provides a much faster alternative to ~git s
 It works on Linux, macOS, FreeBSD, Android, WSL, Cygwin and MSYS2.
 The original work includes scripts to be used in Bash and Zsh shells' prompts.
 The executable has to be installed on the end-user machine for the package to work.
+
+The package may be installed from [[https://melpa.org/#/gitstatus][Melpa]].
 
 
 Rest of the document presents a public API and customization options.

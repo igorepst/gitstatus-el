@@ -3,7 +3,7 @@
 ;; Copyright (C) 2022 Igor Epstein
 
 ;; Author: Igor Epstein <igorepst@gmail.com>
-;; Version: 0.1.0
+;; Version: 0.1.1
 ;; Keywords: tools, processes
 ;; URL: https://github.com/igorepst/gitstatus-el
 ;; Package-Requires: ((emacs "25.1"))
@@ -217,7 +217,7 @@ Propertize with FACE if needed."
     (let ((branch (gitstatus--get-branch-name res))
 	  (case-fold-search nil)
 	  (wip (string-match "[^[:alnum:]]\*\\(wip\\|WIP\\)[^[:alnum:]]\*" (gitstatusd-commit-msg-par res)))
-	  (msgl-s (mapconcat 'identity (reverse (gitstatus--get-counters res)) " ")))
+	  (msgl-s (mapconcat #'identity (reverse (gitstatus--get-counters res)) " ")))
       (concat
        (when (gitstatus--string-not-empty-p gitstatus-prefix) (gitstatus--fontify gitstatus-prefix 'gitstatus-default-face))
        (gitstatus--fontify (concat (gitstatus--get-remote-icon res) " ") 'gitstatus-clean-face)

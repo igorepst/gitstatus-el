@@ -82,7 +82,7 @@
 		    (forward-char place)
 		    (let* ((pos (point))
 			   (inhibit-read-only t))
-		      (insert (concat " " msg))
+		      (insert " " msg)
 		      (add-text-properties pos (+ 1 pos (length msg))
 					   '(read-only t
 						       front-sticky (face read-only)
